@@ -1,6 +1,8 @@
 
 import { Request,Response } from "express";
 import User from "../database/models/userModel";
+import bcrypt from "bcrypt"
+
 
 class AuthController{
 
@@ -14,9 +16,9 @@ class AuthController{
             return
         }
      await User.create({
-        username:username,  //key valur pair same xa vanepaxi {username,password,email} lekda ni hunxa.
-        email:email,
-        password :password       
+        username,  //key valur pair same xa vanepaxi {username,password,email} lekda ni hunxa.
+        email,
+        password : bcrypt.hashSync(password,8)    //(k kura hash garne, saltValue) //Normally salt value 8,10,12 samma rakne.
       })
       res.status(200).json({
         message:"user registered"

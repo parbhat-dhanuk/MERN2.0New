@@ -1,0 +1,6 @@
+encryption,decrytion,Hashing
+
+ bcrypt = blowfish algorithm use garxa // semester project ma yo algorithm dhekhauda hunxa.
+  
+  npm i bcrypt     
+  npm i @types/bcrypt -D                  // for hashing

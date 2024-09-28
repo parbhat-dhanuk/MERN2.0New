@@ -31,4 +31,4 @@ class User extends Model{
     declare password:string
 }
 
-export default User
+export default  User
