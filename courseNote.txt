@@ -1,6 +1,38 @@
-encryption,decrytion,Hashing
+//encryption,decrytion,Hashing
 
  bcrypt = blowfish algorithm use garxa // semester project ma yo algorithm dhekhauda hunxa.
   
   npm i bcrypt     
   npm i @types/bcrypt -D                  // for hashing
+
+
+ // pseudo code for Login 
+ user le login garda email ra password dinxa tes paxi ko logic
+
+does any user exist with above email?
+
+if No:
+Error("user doesn't exist with above email")
+
+if Yes:
+
+check password?    //  bcrypt.compareSync()
+
+if No:
+
+Error("Password didn't match")
+
+if Yes:
+
+token generate && response ma token pathaidiney.  //token ko lagi chai hami jsonwebtoken use garxau
+
+
+//json web token
+
+npm i jsonwebtoken
+npm i @types/jsonwebtoken -D
+
+
+//Error Handling try catch of better way, try catch garda ni hunxa but dheraii methods haru hunxan
+so tyo puraii ma try catch garda time dheraii waste hunxa tesko alternative chai services folder ma code lekheko xa.
+

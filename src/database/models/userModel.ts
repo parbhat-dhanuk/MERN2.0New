@@ -1,3 +1,4 @@
+import { ENUM } from "sequelize"
 import {Table,Column,Model,DataType} from "sequelize-typescript"
 
 @Table({
@@ -29,6 +30,15 @@ class User extends Model{
         type:DataType.STRING
     })
     declare password:string
+
+    @Column({
+        type:DataType.ENUM("customer","admin"),
+        defaultValue:"customer",
+        validate:{
+            isIn:[["customer","admin"]]
+        }
+    })
+    declare role:string
 }
 
 export default  User
