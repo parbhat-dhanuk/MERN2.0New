@@ -18,6 +18,20 @@ class AuthController{
             })
             return
         }
+         
+          //Email validation
+     const databaseEmail =  await User.findOne({
+        where:{
+          email:email
+        }
+     })
+    if(databaseEmail){
+      res.status(400).json({
+        meaasge:"email is already in use"
+      }) 
+      return
+    }
+
      await User.create({
         username,  //key valur pair same xa vanepaxi {username,password,email} lekda ni hunxa.
         email,
@@ -28,7 +42,9 @@ class AuthController{
         message:"user registered successfully"
       })
 
+
     }
+
 
 
 
@@ -51,6 +67,7 @@ public static async loginUser(req:Request,res:Response):Promise<void>{
        email : email
     }
   })
+ 
 
   if(!data){
     res.status(404).json({

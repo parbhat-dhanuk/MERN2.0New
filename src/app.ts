@@ -9,11 +9,13 @@ import './database/connection'
 
 app.use(express.json())  //main line ho yo natra API Hit hudaina yo line navayepaxi yo halna bisrinu vayena.
 
-import registerRouter from "./routes/userRoute" //userRoute import gareko
-app.use("",registerRouter) //localhost:400/register//  if "" vitra "/hello" va ko vaye localhost:4000/hello/register hunthoe.      
+import userRouter from "./routes/userRoute" //userRoute import gareko
+import adminSeeder from "./Seeder/adminSeeder"
+app.use("",userRouter) //localhost:400/register//  if "" vitra "/hello" va ko vaye localhost:4000/hello/register hunthoe.      
  
 
-
+//adminSeedser
+adminSeeder()
 
 
 

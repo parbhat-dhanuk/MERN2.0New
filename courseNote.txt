@@ -36,3 +36,7 @@ npm i @types/jsonwebtoken -D
 //Error Handling try catch of better way, try catch garda ni hunxa but dheraii methods haru hunxan
 so tyo puraii ma try catch garda time dheraii waste hunxa tesko alternative chai services folder ma code lekheko xa.
 
+
+//Admin Seeder
+yesto process kunai pani project kholne bitikaii database data entry garinxa tyo lai Seeding vanenxa.
+seeder folder vitra adminSeeder file banako xau tyo function chai app.ts ma export gareko xau.
