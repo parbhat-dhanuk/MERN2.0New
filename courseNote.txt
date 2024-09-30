@@ -40,3 +40,16 @@ so tyo puraii ma try catch garda time dheraii waste hunxa tesko alternative chai
 //Admin Seeder
 yesto process kunai pani project kholne bitikaii database data entry garinxa tyo lai Seeding vanenxa.
 seeder folder vitra adminSeeder file banako xau tyo function chai app.ts ma export gareko xau.
+
+
+//Middleware
+
+middleware chai bich ko agent ho jasle keii action garnu vanda bich ma checking garxa.
+middle ma next() invoke va ko hunxa but controller ma chai next() hudaina.
+example: import {Request,Response,NextFunction} from "express" yesari NextFunction ni import va ko hunxa.
+
+
+//multer middleware
+
+npm i multer
+npm i @types/multer -D

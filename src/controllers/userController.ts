@@ -3,13 +3,14 @@ import { Request,Response } from "express";
 import User from "../database/models/userModel";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { strict } from "assert";
 
 
 
 class AuthController{
 
         //Register
-   public static async registerUser(req:Request,res:Response):Promise<void>{     //async method(function)ho 
+   async registerUser(req:Request,res:Response):Promise<void>{     //async method(function)ho 
                                                   // async method vayepaxi hami le return type Promise<void> nai hunxa.
         const {username,email,password,role}=req.body
         if(!username||!email||!password){
@@ -50,7 +51,7 @@ class AuthController{
 
 
     //Login
-public static async loginUser(req:Request,res:Response):Promise<void>{
+ async loginUser(req:Request,res:Response):Promise<void>{
 
   const {email,password} =req.body
 
@@ -87,7 +88,7 @@ public static async loginUser(req:Request,res:Response):Promise<void>{
   }
 
 //generate token and send to user
-const token = jwt.sign({id:data.id},"parbhat",{     // parbhat vaneko yo encryption lai descryption garne passord ho.
+const token = jwt.sign({id:data.id},process.env.SECRET_KEY as string,{     // parbhat vaneko yo encryption lai descryption garne passord ho.
   expiresIn:"20d"
 })
 res.status(200).json({
@@ -102,4 +103,4 @@ res.status(200).json({
 // const AuthControllers = new AuthController      //yo chai instance tarika le export gareko
 // export default AuthControllers                   instatic instance garne maan chaina 
                                                  //vane mathi register method ma public satic aagdhi lekdine.
-export default AuthController
+export default new AuthController()
