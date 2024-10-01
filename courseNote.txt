@@ -53,3 +53,20 @@ example: import {Request,Response,NextFunction} from "express" yesari NextFuncti
 
 npm i multer
 npm i @types/multer -D
+
+
+//Relations on DB Tables
+
+database ko entry file ma jane Connections.ts ma
+
+User.hasMany(Product)
+Product.belongsTo(User)
+ 
+ yo code le User model ra Product model ma relation banauxa.
+ Product model ma foreignkey banuxa UserId vanera.
+
+yo tala ko code chai UserId ko name change garna lai matra ho nagarda ni hunxa.
+ User.hasMany(Product,{foreignKey:"userId"})
+Product.belongsTo(User,{foreignKey:"userId"}) 
+
+userId ko value ko lagi chai User table ko admin ko id pass garidine

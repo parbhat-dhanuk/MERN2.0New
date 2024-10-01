@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 import User from "../database/models/userModel"
 
 
-interface AuthRequest extends Request{
+export interface AuthRequest extends Request{  //yo chai hami le foreign key ko value ko lagi export gareko.
     user?:{
         username:string,
         email:string,
