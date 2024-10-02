@@ -43,7 +43,7 @@ class ProductController{
 
     }
 
-    //Read Product
+    //Get All Products
 
     async getAllProducts(req:Request,res:Response):Promise<void>{
       const data = await Product.findAll(
@@ -68,6 +68,64 @@ class ProductController{
     }
     
 
+    //Get Single Product
+
+    async getSingleProduct(req:Request,res:Response):Promise<void>{
+      const id = req.params.id
+      const data = await Product.findAll({
+         where:{
+            id:id
+         },
+         include:[
+            {
+               model:User,
+               attributes:["id","email","username"]
+            },
+            {
+               model:Category,
+               attributes:["id","categoryName"]
+            }
+         ]
+      })
+      if(data.length===0){
+         res.status(404).json({
+            message:"no product with that id"
+         })
+      }else{
+         res.status(200).json({
+            message:"product fetched successfully",
+            data:data
+         })
+      }
+    }
+
+    //Delete product
+
+    async deleteProduct(req:Request,res:Response):Promise<void>{
+       const id = req.params.id
+       const data = await Product.findAll({
+         where:{
+            id:id
+         }
+       })
+
+       if(data.length>0){
+         await Product.destroy({
+            where:{
+               id:id
+            }
+            
+          })
+          res.status(200).json({
+            message:"product deleted successfully"
+          })
+       }else{
+         res.status(404).json({
+            message:"no product with that id"
+         })
+       }
+       
+    }
     
 }
 
