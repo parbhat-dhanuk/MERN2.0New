@@ -12,12 +12,13 @@ app.use(express.json())  //main line ho yo natra API Hit hudaina yo line navayep
 import userRouter from "./routes/userRoute" //userRoute import gareko
 import productRoute from  "./routes/productRoute"
 import adminSeeder from "./Seeder/adminSeeder"
+import categoryRouter from "./routes/categoryRoutes"
 import categoryController from "./controllers/categoryController"
 
 app.use("",userRouter) //localhost:400/register//  if " " vitra "/hello" va ko vaye localhost:4000/hello/register hunthoe.      
 app.use("/admin/product",productRoute)//product route
 
-
+app.use("/admin",categoryRouter)
 
 
 
