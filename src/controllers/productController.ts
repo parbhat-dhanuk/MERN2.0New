@@ -136,14 +136,19 @@ class ProductController{
 
     //Update product
   
+   async updatePrduct(req:AuthRequest,res:Response):Promise<void>{
 
-async updateProduct(req: AuthRequest, res: Response): Promise<void> {
-   const id = req.params.id;
+      const id = req.params.id;
    const userId = req.user?.id;  // Foreign key for product
    const { productName, productDescription, productPrice, productTotalStockQty, categoryId } = req.body;
 
    try {
-       const oldDatas = await Product.findOne({ where: { id } });
+       const oldDatas = await Product.findOne({
+         where:{
+            id:id
+         }
+       })
+       console.log(oldDatas)
        if (!oldDatas) {
            res.status(404).json({ message: "Product not found" });
            return;
@@ -152,15 +157,11 @@ async updateProduct(req: AuthRequest, res: Response): Promise<void> {
        let fileName: string;
 
        if (req.file) {
-           const oldImagePath = oldDatas?.productImageUrl;
-
+           const oldImagePath = oldDatas?.productImageUrl //1727974378767-Parbhat.jpg
+           
            if (oldImagePath) {
-               const localHostUrlLength = "http://localhost:4000/".length;
-               const newOldImagePath = oldImagePath.slice(localHostUrlLength);
-
-
-
-       const filePath = path.join(__dirname, '../uploads', newOldImagePath)
+      
+       const filePath = path.join(__dirname, '../uploads',oldImagePath)
          fs.unlink(filePath, (err) => {
     if (err) {
         console.log(err);
@@ -170,7 +171,7 @@ async updateProduct(req: AuthRequest, res: Response): Promise<void> {
 })
            }
 
-           fileName = `http://localhost:4000/${req.file.filename}`
+           fileName = req.file.filename
        } else {
            fileName = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZHBob25lfGVufDB8fDB8fHww";
        }
@@ -191,7 +192,9 @@ async updateProduct(req: AuthRequest, res: Response): Promise<void> {
            userId,
            categoryId
        }, {
-           where: { id }
+           where: { 
+            
+            }
        });
 
        res.status(200).json({ message: "Product updated successfully" });
@@ -202,7 +205,7 @@ async updateProduct(req: AuthRequest, res: Response): Promise<void> {
    }
 }
 
-
 }
+
 
 export default new ProductController()
