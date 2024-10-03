@@ -148,7 +148,7 @@ class ProductController{
             id:id
          }
        })
-       console.log(oldDatas)
+       
        if (!oldDatas) {
            res.status(404).json({ message: "Product not found" });
            return;
