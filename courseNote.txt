@@ -70,3 +70,16 @@ yo tala ko code chai UserId ko name change garna lai matra ho nagarda ni hunxa.
 Product.belongsTo(User,{foreignKey:"userId"}) 
 
 userId ko value ko lagi chai User table ko admin ko id pass garidine
+
+
+//cloudinary , AWS , s3 bucket ,Digital ocean spaces => yo sabai hosting provider hun.
+
+yedi hami lai aafno server ma store garna maan xain but aru le bankao server ma keii store kinera tya rakna maan xa vane
+cloudinary,AWS ko s3bucket ,digital oceans le yo service provide garxa.
+yeni haru vaneko hamro server ko  photo save files haru cloud ma save garxan yedi hami le xuttai 
+raknu xa image ra files haru vanepaxi yinu haru use garda huxa sabaii premium hunxan but cloudnary le chai 512 mb free dinxa.
+
+// Add to cart
+
+MYSQL ma chai xuttai table banaunu parxa but moongoose ma chai table banaunu pardain aadd cart ko lagi kina ki moongoose
+le chai Array support garxa.(SQL  ko postgresql le ni arry support garxa.)
