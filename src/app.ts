@@ -2,7 +2,7 @@ import express , {Application,Request,Response} from "express"
 import path from "path"
 
 const app:Application=express()
-const port:number = 4000
+const port:number = 5000
 
 import * as dotenv from "dotenv"
 dotenv.config()

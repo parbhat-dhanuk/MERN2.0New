@@ -6,4 +6,7 @@ import cartController from "../controllers/cartController"
 router.route("/").post(AuthMiddleware.isAuthenticated,cartController.addToCart)
 .get(AuthMiddleware.isAuthenticated,cartController.getMyCarts)
 
+router.route("/:id").patch(AuthMiddleware.isAuthenticated,cartController.updateCartItem)
+.delete(AuthMiddleware.isAuthenticated,cartController.deleteMyCartItems)
+
 export default router

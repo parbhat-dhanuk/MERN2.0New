@@ -2,8 +2,13 @@ import {Response} from "express"
 import { AuthRequest } from "../middleware/middleware"
 import Cart from "../database/models/cart"
 import Product from "../database/models/productModel"
+import Category from "../database/models/category"
+
+
+
 
 class CartController{
+
 
     async addToCart(req:AuthRequest,res:Response):Promise<void>{
         const userId=req.user?.id
@@ -52,9 +57,16 @@ class CartController{
            
             include:[
                 {
-                    model:Product
+                    model:Product,
+                    include:[
+                        {
+                            model:Category,
+                            attributes:["id","categoryName"]
+                        }
+                    ]
                 }
-            ]
+            ],
+            attributes:["productId","quantity"]
         })
         if(cartItems.length===0){
             res.status(400).json({
@@ -68,6 +80,65 @@ class CartController{
         }
       
         
+    }
+
+    //Delete cart
+    async deleteMyCartItems(req:AuthRequest,res:Response):Promise<void>{
+        const userId = req.user?.id
+        const {id:productId} = req.params
+
+        //check whether above productId product exist or not
+        const product = await Product.findByPk(productId)
+        if(!product){
+            res.status(404).json({
+             message:"no product with that id"
+            })
+            return
+        }
+        // delete that productId from userCart
+        Cart.destroy({
+            where:{
+                userId:userId,
+                productId:productId
+            }
+        })
+        res.status(200).json({
+            message:"product of cart deleted successfully"
+        })
+    }
+
+    //Update
+
+    async updateCartItem(req:AuthRequest,res:Response):Promise<void>{
+     
+        const {id:productId}=req.params
+        const userId = req.user?.id
+        const {quantity} = req.body
+        if(!quantity){
+            res.status(404).json({
+                message:"please provide  quantity"
+            })
+        }
+        const cartData = await Cart.findOne({
+            where:{
+                userId:userId,
+                productId:productId
+            }
+        })
+        
+        if(cartData){
+            cartData.quantity = quantity
+            await cartData?.save()
+            res.status(200).json({
+                message:"product of cart updated successfully",
+                data:cartData
+            })
+        }else{
+            res.status(404).json({
+                message:"no productId of that userId"
+            })
+        }
+       
     }
 
 }
