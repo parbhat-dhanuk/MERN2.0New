@@ -1,4 +1,4 @@
-import {Sequelize} from "sequelize-typescript"
+import {ForeignKey, Sequelize} from "sequelize-typescript"
 import User from "./models/userModel"
 import Product from "./models/productModel"
 import Category from "./models/category"
@@ -60,6 +60,9 @@ OrderDetail.belongsTo(Product,{foreignKey:"productId"})
 Payment.hasOne(Order,{foreignKey:"paymentId"})
 Order.belongsTo(Payment,{foreignKey:"paymentId"})
 
+//order-user relation
+User.hasMany(Order,{foreignKey:"userId"})
+Order.belongsTo(User,{foreignKey:"userId"})
 
 
 

@@ -2,7 +2,7 @@ import express , {Application,Request,Response} from "express"
 import path from "path"
 
 const app:Application=express()
-const port:number = 5000
+const port:number = 4000
 
 import * as dotenv from "dotenv"
 dotenv.config()
@@ -13,6 +13,7 @@ app.use(express.json())  //main line ho yo natra API Hit hudaina yo line navayep
 import userRouter from "./routes/userRoute" //userRoute import gareko
 import productRoute from  "./routes/productRoute"
 import cartRoute from "./routes/cartRoute"
+import orderRoute from "./routes/orderRoute"
 import adminSeeder from "./Seeder/adminSeeder"
 import categoryRouter from "./routes/categoryRoutes"
 import categoryController from "./controllers/categoryController"
@@ -25,7 +26,7 @@ app.use("/admin/product",productRoute)//product route
 
 app.use("/admin",categoryRouter)
 app.use("/customer/cart",cartRoute)
-
+app.use("/customer/order",orderRoute)
 
 
 app.listen (port,()=>{
