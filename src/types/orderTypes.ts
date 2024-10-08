@@ -19,12 +19,12 @@ export interface OrderDetails{
 }
 
 export enum PaymentMethod{
-    cod="cod",
+    cod="Cod",
     khalti ="khalti",
 
 }
 
-enum PaymentStatus{
+export enum PaymentStatus{
     Paid="paid",
     Unpaid="unpaid"
 }
@@ -35,3 +35,19 @@ export interface KhaltiResponse{
     expires_at:Date|string,
     expires_in:number
 }
+
+export interface TransactionResponse{
+    pidx: string,
+   total_amount:number,
+   status:TransactionStatus,
+   transaction_id:string,
+   fee: number,
+   refunded:boolean
+}
+
+ export enum TransactionStatus{
+    Completed="Completed",
+    Pending="Pending",
+    Refunded="Refunded",
+    Initiated="Initiated"
+ }
