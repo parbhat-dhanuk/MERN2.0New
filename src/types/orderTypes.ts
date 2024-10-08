@@ -51,3 +51,12 @@ export interface TransactionResponse{
     Refunded="Refunded",
     Initiated="Initiated"
  }
+
+ export enum OrderStatus{
+    Pending="pending",
+    Cancelled="cancelled",
+    Delivered="delivered",
+    Ontheway="ontheway",
+    Preparation="preparation"
+
+ }
