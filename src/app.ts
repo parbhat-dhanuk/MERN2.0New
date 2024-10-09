@@ -26,7 +26,7 @@ app.use("/admin/product",productRoute)//product route
 
 app.use("/admin",categoryRouter)
 app.use("/customer/cart",cartRoute)
-app.use("/customer/order",orderRoute)
+app.use("/order",orderRoute)
 
 
 app.listen (port,()=>{

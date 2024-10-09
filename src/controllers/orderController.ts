@@ -1,5 +1,5 @@
 import { AuthRequest } from "../middleware/middleware";
-import { Response } from "express";
+import {Request, Response } from "express";
 import { KhaltiResponse, OrderData, OrderStatus, PaymentMethod, PaymentStatus, TransactionResponse, TransactionStatus } from "../types/orderTypes";
 import Order from "../database/models/order";
 import Payment from "../database/models/payment";
@@ -7,6 +7,10 @@ import OrderDetail from "../database/models/orderDetails";
 import axios from "axios";
 import Product from "../database/models/productModel";
 
+
+class ExtendedOrder extends Order{
+    declare paymentId:string|null
+}
 
 class OrderController{
 
@@ -196,6 +200,79 @@ async cancelOrder(req:AuthRequest,res:Response):Promise<void>{
 }
 
 //Customer side Ended here
+
+
+//Admin side starts here
+
+async changeOrderStatus(req:Request,res:Response):Promise<void>{
+    const orderId=req.params.id
+    const orderStatus:OrderStatus=req.body.orderStatus
+    await Order.update({
+        orderStatus:orderStatus
+    },{
+       where:{
+        id:orderId
+       }
+    })
+    res.status(200).json({
+        message:"order status updated successfully"
+    })
+    
+}
+
+
+async changePaymentStatus(req:Request,res:Response):Promise<void>{
+    const orderId = req.params.id
+    const paymentStatus:PaymentStatus = req.body.paymentStatus
+    const order = await Order.findByPk(orderId)
+    const extendedOrder:ExtendedOrder=order as ExtendedOrder
+    await Payment.update({
+        paymentStatus:paymentStatus
+    },{
+        where:{
+            id:extendedOrder.paymentId
+        }
+    })
+    res.status(200).json({
+        message:`payment status of orderId ${orderId} updated successfully to ${paymentStatus}`
+    })
+}
+
+
+async deleteOrder(req:Request,res:Response):Promise<void>{
+    const orderId = req.params.id
+    const order:any = await Order.findByPk(orderId)
+  
+    if(order){
+
+        await OrderDetail.destroy({
+            where:{
+                orderId:orderId
+            }
+        })
+
+        await Payment.destroy({
+            where:{
+                id:order.paymentId
+            }
+        })
+
+        await Order.destroy({
+            where:{
+                id:orderId
+            }
+        })
+    
+       
+        res.status(200).json({
+            message:"order deleted successfully"
+        })
+    }else{
+        res.status(400).json({
+            message:"no order with orderId"
+        })
+    }
+}
 
 }
 

@@ -11,9 +11,20 @@ router.route("/").post(AuthMiddleware.isAuthenticated,errorHandler(orderControll
 
 router.route("/verify").post(AuthMiddleware.isAuthenticated,errorHandler(orderController.verifyTransaction))
 
-router.route("/customer").post(AuthMiddleware.isAuthenticated,errorHandler(orderController.fetchMyOrders))
+router.route("/customer").get(AuthMiddleware.isAuthenticated,errorHandler(orderController.fetchMyOrders))
 
-router.route("/customer/:id").patch(AuthMiddleware.isAuthenticated,AuthMiddleware.restrictTo(Role.Customer),errorHandler(orderController.cancelOrder))
-.get(AuthMiddleware.isAuthenticated,errorHandler(orderController.fetchOrderDetails))
+router.route("/customer/:id").patch(AuthMiddleware.isAuthenticated,AuthMiddleware.restrictTo(Role.Customer),
+errorHandler(orderController.cancelOrder)).get(AuthMiddleware.isAuthenticated,errorHandler(orderController.fetchOrderDetails))
+
+
+
+router.route("/admin/payment/:id").patch(AuthMiddleware.isAuthenticated,AuthMiddleware.restrictTo(Role.Admin),
+errorHandler(orderController.changePaymentStatus))
+
+router.route("/admin/:id").patch(AuthMiddleware.isAuthenticated,AuthMiddleware.restrictTo(Role.Admin),errorHandler(orderController.changeOrderStatus))
+.delete(AuthMiddleware.isAuthenticated,AuthMiddleware.restrictTo(Role.Admin),errorHandler(orderController.deleteOrder))
+
+
+
 
 export default router
