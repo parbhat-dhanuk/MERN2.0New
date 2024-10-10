@@ -193,7 +193,7 @@ class ProductController{
            categoryId
        }, {
            where: { 
-            
+            id:id
             }
        });
 
