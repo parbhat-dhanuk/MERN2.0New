@@ -1,22 +1,35 @@
 
-import multer from "multer"
-import { Request } from "express"
-const storage = multer.diskStorage({
-    destination:function(req:Request,file:Express.Multer.File,cb:any){
-        const allowFilesTypes = ["image/jpg","image/png","image/jpeg"]
-        if(!allowFilesTypes.includes(file.mimetype)){
-            cb(new Error("This file is not accepted"))
-            return
-        }
-        cb(null,"./src/uploads")
-    },
-    filename:function(req:Request,file:Express.Multer.File,cb:any){
-        cb(null,Date.now() + "-" + file.originalname)
-    }
-})
+import multer, { FileFilterCallback } from 'multer';
+import { Request } from 'express';
+import path from 'path';
 
-export {
-    multer,
-    storage
+class FileUploadService {
+  private static allowedFileTypes = /jpeg|jpg|png|gif/;
+  private static maxFileSize = 6 * 1024 * 1024; // 2MB
+
+  private static fileFilter(req: Request, file: Express.Multer.File, cb: FileFilterCallback): void {
+    const extname = FileUploadService.allowedFileTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimeType = FileUploadService.allowedFileTypes.test(file.mimetype);
+
+    if (mimeType && extname) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid image type. Only JPEG, PNG, and GIF are allowed.'));
+    }
+  }
+
+  public static getUploadMiddleware() {
+    return multer({
+      storage: multer.memoryStorage(),
+      limits: { fileSize: FileUploadService.maxFileSize },
+      fileFilter: FileUploadService.fileFilter,
+    })
+    .single('image');
+  }
 }
+
+export default FileUploadService;
+
 

@@ -6,6 +6,8 @@ import User from "../database/models/userModel"
 import Category from "../database/models/category"
 import fs from 'fs'
 import path from "path"
+import FileUploadService from "../middleware/multerMiddleware"
+import cloudinary from "../utils/cloudinary"
 
 
 
@@ -13,40 +15,73 @@ import path from "path"
 
 class ProductController{
 
+   async addProduct(req:AuthRequest, res: Response):Promise<void> {
+      const upload = FileUploadService.getUploadMiddleware();
+      const userId=req.user?.id
+      let fileName:string
+      upload(req, res, async (err: any) => {
+        if (err) {
+          if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).send('File size too large. Max size is 2MB.');
+          }
+          return res.status(500).send(err.message || 'Error uploading file');
+        }
   
-    async addProduct(req:AuthRequest,res:Response):Promise<void>{
-        const userId=req.user?.id  // product ko foreignkey ko lagi id ho
-     const {productName,productDescription,productPrice,productTotalStockQty,categoryId}=req.body
-     let fileName
-     if(req.file){
-        fileName=req.file?.filename
-     }else{
-        fileName="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZHBob25lfGVufDB8fDB8fHww"
-     }
+        if (!req.file) {
+         //  return res.status(400).send('Please upload an image.');
+          fileName="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZHBob25lfGVufDB8fDB8fHww"
+        }
+  
+        try {
+          // Upload image buffer directly to Cloudinary
+          const stream = cloudinary.uploader.upload_stream(
+            {
+              folder: 'MERN',  // Specify your folder name here
+            },
+            async (error, result) => {
+              if (error) {
+                return res.status(500).send('Failed to upload image to Cloudinary.');
+              }
+  
+              try {
+                // Save product details and image URL in MySQL database
+                const product = await Product.create({
+                  productName: req.body.productName,
+                  productDescription: req.body.productDescription,
+                  productImageUrl: result?.secure_url|| fileName,
+                  productPrice:req.body.productPrice,
+                  productTotalStockQty:req.body.productTotalStockQty,
+                  userId:userId,
+                  categoryId:req.body.categoryId
+                  // productName,
+                  // productPrice,
+                  // productDescription,
+                  // productTotalStockQty,
+                  // productImageUrl: fileName,
+                  // userId,
+                  // categoryId
 
-     if(!productName||!productDescription||!productPrice||!productTotalStockQty||!categoryId){
-        res.status(400).json({
-            message:"please provide ProductName,productDescription,productPrice,productTotalStockQty,categoryId"
-        })
-        return
-     }
-
-     Product.create({
-        productName,
-        productPrice,
-        productDescription,
-        productTotalStockQty,
-        productImageUrl:fileName,
-        userId:userId,
-        categoryId:categoryId
-
-        
-     })
-     res.status(200).json({
-      message:"product added successfully"
-     })
-
+                });
+  
+                return res.status(201).json({
+                  message: 'Product created successfully',
+                  product,
+                });
+              } catch (dbError) {
+                return res.status(500).json({ error: 'Failed to create product' });
+              }
+            }
+          );
+  
+          // Stream the file buffer to Cloudinary
+          stream.end(req.file?.buffer);
+        } catch (error) {
+          return res.status(500).json({ error: 'Failed to create product' });
+        }
+      });
     }
+  
+   
 
     //Get All Products
 
