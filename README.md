@@ -32,8 +32,8 @@ Polymorphism: Flexible API design for handling different payment methods.
 
 
  <b>Live view<b/> https://frontend-hamroshopping.onrender.com/
-<br> For Admin Panel 
-Email:admin@gmail.com 
+<br> For Admin Panel<br> 
+Email: admin@gmail.com 
 <br>
-Password:admin
+Password: admin
 <br> 
