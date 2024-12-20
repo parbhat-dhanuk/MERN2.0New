@@ -13,8 +13,7 @@ Payment Gateway: Seamless integration with Khalti for secure transactions.
 <br>
 Order Management: Place, view, and manage orders.
 <br>
-Responsive Design: Optimized for all screen sizes.
-<br>
+
 TypeScript Support: Ensures type safety and better maintainability.
 <br>
 <h2>Tech Stack</h2>
