@@ -32,8 +32,4 @@ Polymorphism: Flexible API design for handling different payment methods.
 
 
 
-<br> For Admin Panel<br> 
-Email: admin@gmail.com 
-<br>
-Password: admin
-<br> 
+
